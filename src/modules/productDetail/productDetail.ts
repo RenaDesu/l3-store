@@ -5,7 +5,6 @@ import { ProductData } from 'types';
 import html from './productDetail.tpl.html';
 import { cartService } from '../../services/cart.service';
 import { favoriteService } from '../../services/favorite.service';
-// import { favoritesComp } from '../favorites/favorites';
 
 class ProductDetail extends Component {
   more: ProductList;
@@ -71,18 +70,24 @@ class ProductDetail extends Component {
     if (!this.product) return;
 
     const isFav = await favoriteService.isFavorite(this.product);
+    
     if (isFav) {
       await favoriteService.removeProduct(this.product);
       this._toggleFavClass(isFav);
-      // const isEmpty = await favoriteService.isEmpty();
-      
-      // if (isEmpty) {
-      //   favoritesComp.update();
-      // }
+      const isEmpty = await favoriteService.isEmpty();
+      if (isEmpty) {
+        // @ts-ignore
+        document.querySelector('[data-favorites]').style.display = 'none';
+      }
 
     } else {
       await favoriteService.addProduct(this.product);
       this._toggleFavClass(isFav);
+      const isEmpty = await favoriteService.isEmpty();
+      if (!isEmpty) {
+        // @ts-ignore
+        document.querySelector('[data-favorites]').style.display = 'block';
+      }
     }
   }
 

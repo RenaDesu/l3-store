@@ -26,7 +26,6 @@ export default class Router {
 
   route(e: any) {
     e.preventDefault();
-
     // @ts-ignore
     const component = ROUTES[window.location.pathname] || notFoundComp;
 
@@ -34,16 +33,24 @@ export default class Router {
     component.render();
   }
 
-  // private _route(url: string, args?: any) {
-  //   const pathName = window.location.pathname;
-  //   if (pathName !== url) {
-  //       window.history.replaceState({ scrollPositionY: window.pageYOffset }, '');
-  //       window.history.pushState({}, '', url);
-  //   }
-  //   setTimeout(() => this.route(args));
-  // }
+  routeTo() {
+    // @ts-ignore
+    const component = ROUTES[window.location.pathname] || notFoundComp;
 
-  // toHome() {
-  //   this._route('/');
-  // }
+    component.attach(this.$appRoot);
+    component.render();
+  }
+
+  private _route(url: string) {
+    const pathName = window.location.pathname;
+    if (pathName !== url) {
+        window.history.replaceState({ scrollPositionY: window.pageYOffset }, '');
+        window.history.pushState({}, '', url);
+    }
+    setTimeout(() => this.routeTo());
+  }
+
+  toHome() {
+    this._route('/');
+  }
 }

@@ -39,7 +39,7 @@ class FavoriteService {
 
     async isEmpty() {
       const products = await this.get();
-      return products.length !== 0;
+      return products.length === 0;
     }
   
     private async _updCounters() {
