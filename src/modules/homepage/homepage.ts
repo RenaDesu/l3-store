@@ -1,6 +1,7 @@
 import { addElement } from '../../utils/helpers';
 import { Component } from '../component';
 import html from './homepage.tpl.html';
+import { userService } from '../../services/user.service';
 
 import { ProductList } from '../productList/productList';
 
@@ -14,10 +15,11 @@ class Homepage extends Component {
     this.popularProducts.attach(this.view.popular);
   }
 
-  render() {
+  async render() {
+    const UserID = await userService.getId();
     fetch('/api/getPopularProducts', {
         headers: {
-          'x-userid': window.userId,
+          'x-userid': UserID,
         }
   })
       .then((res) => res.json())
