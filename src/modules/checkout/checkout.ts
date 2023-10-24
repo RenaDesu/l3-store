@@ -1,9 +1,16 @@
 import { Component } from '../component';
 import { Product } from '../product/product';
 import html from './checkout.tpl.html';
-import { formatPrice } from '../../utils/helpers';
+import { formatPrice, random_id } from '../../utils/helpers';
 import { cartService } from '../../services/cart.service';
 import { ProductData } from 'types';
+import { statsService } from '../../services/stats.service';
+
+export interface Order {
+  orderId: string, 
+	totalPrice: number, 
+	productIds: number[]
+}
 
 class Checkout extends Component {
   products!: ProductData[];
@@ -34,6 +41,16 @@ class Checkout extends Component {
       method: 'POST',
       body: JSON.stringify(this.products)
     });
+    const ids: number[] = [];
+    this.products.forEach((product) => {
+      ids.push(product.id);
+    });
+    const orderData = {
+      orderId: random_id, 
+      totalPrice: this.products.reduce((acc, product) => (acc += product.salePriceU), 0), 
+      productIds: ids
+    };
+    statsService.onOrder(orderData);
     window.location.href = '/?isSuccessOrder';
   }
 }
