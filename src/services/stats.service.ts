@@ -90,8 +90,7 @@ export class StatsService {
 
     private _send(event: Event) {
         const body = event;
-        // fetch('/api/sendEvent', { method: 'POST', body: JSON.stringify(body) });
-        console.log(JSON.stringify(body));
+        fetch('/api/sendEvent', { method: 'POST', body: JSON.stringify(body) });
     }
 }
 
