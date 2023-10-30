@@ -44,8 +44,7 @@ export default class Router {
   private _route(url: string) {
     const pathName = window.location.pathname;
     if (pathName !== url) {
-        window.history.replaceState({ scrollPositionY: window.pageYOffset }, '');
-        window.history.pushState({}, '', url);
+        window.history.replaceState({}, '', url);
     }
     setTimeout(() => this.routeTo());
   }
